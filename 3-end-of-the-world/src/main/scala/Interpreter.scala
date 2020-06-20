@@ -4,7 +4,7 @@ object Interpreter {
 
   def main(args: Array[String]): Unit = {
     print(Console.RED)
-    val description: Description[Unit] = Program.createDescription(args)
+    val description: Description[Unit] = PointFreeProgram.createDescription(args)
     def interpret[A](description: Description[A]): A = description.apply()
 
     print(Console.GREEN)

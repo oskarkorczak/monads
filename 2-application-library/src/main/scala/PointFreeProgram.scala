@@ -1,6 +1,6 @@
 import fplibrary.Description
 
-object Program {
+object PointFreeProgram {
 
   def createDescription(args: Array[String]): Description[Unit] = Description.create {
     args.isEmpty
