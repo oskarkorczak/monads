@@ -1,6 +1,6 @@
+import fplibrary.Description
+
 object Program {
-  private type Thunk[A] = () => A
-  type Description[A] = Thunk[A]
 
   def createDescription(args: Array[String]): Description[Unit] = () => {
     args.isEmpty
