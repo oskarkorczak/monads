@@ -1,10 +1,11 @@
 object Program {
+  private type Thunk[A] = () => A
+  type Description[A] = Thunk[A]
 
-  def run(args: Array[String]): Unit = {
+  def createDescription(args: Array[String]): Description[Unit] = () => {
     args.isEmpty
 
     display(hyphens)
-
     display(question)
 
     val input: String = prompt()
@@ -14,7 +15,6 @@ object Program {
     val message: String = createMessage(balance)
 
     display(message)
-
     display(hyphens)
   }
 
@@ -23,12 +23,10 @@ object Program {
   private val question: String = "How much money would you like to deposit?"
 
   // side effect (writing to the console)
-  private def display(input: Any): Unit = {
-    println(input)
-  }
+  private def display(input: Any): Unit = println(input)
 
   // side effect (reading from the console)
-  private def prompt(): String = scala.io.StdIn.readLine
+  private def prompt(): String = 5.toString // scala.io.StdIn.readLine
 
   // potential side effect (throwing of a NumberFormatException)
   private def converStringToInt(input: String): Int = input.toInt
