@@ -3,30 +3,40 @@ import fplibrary.Description
 object PointFreeProgram {
 
   def createDescription(args: Array[String]): Description[Unit] = Description.create {
-    args.isEmpty
+    display(
+      hyphens(())
+    )
 
-    display(hyphens)
-    display(question)
+    display(
+      question(())
+    )
 
-    val input: String = prompt()
-    val integerAmount: Int = converStringToInt(input)
-    val positiveAmount: Int = ensureAmountIsPositive(integerAmount)
-    val balance: Int = round(positiveAmount)
-    val message: String = createMessage(balance)
+    display(
+      createMessage(
+        round(
+          ensureAmountIsPositive(
+            converStringToInt(
+              prompt(())
+            )
+          )
+        )
+      )
+    )
 
-    display(message)
-    display(hyphens)
+    display(
+      hyphens(())
+    )
   }
 
-  private val hyphens: String = "\u2500" * 50
+  private def hyphens(input: Any): String = "-" * 50
 
-  private val question: String = "How much money would you like to deposit?"
+  private def question(input: Any): String = "How much money would you like to deposit?"
 
   // side effect (writing to the console)
   private def display(input: Any): Unit = println(input)
 
   // side effect (reading from the console)
-  private def prompt(): String = 5.toString // scala.io.StdIn.readLine
+  private def prompt(input: Any): String = "5"
 
   // potential side effect (throwing of a NumberFormatException)
   private def converStringToInt(input: String): Int = input.toInt
