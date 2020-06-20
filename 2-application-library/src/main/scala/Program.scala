@@ -2,7 +2,7 @@ import fplibrary.Description
 
 object Program {
 
-  def createDescription(args: Array[String]): Description[Unit] = () => {
+  def createDescription(args: Array[String]): Description[Unit] = Description.create {
     args.isEmpty
 
     display(hyphens)
