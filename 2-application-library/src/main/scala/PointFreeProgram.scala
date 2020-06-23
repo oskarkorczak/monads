@@ -64,6 +64,6 @@ object PointFreeProgram {
   }
 
   private def createMessage(balance: Int): String = {
-    s"Congratulatins, you now have USD $balance."
+    s"Congratulations, you now have USD $balance."
   }
 }
