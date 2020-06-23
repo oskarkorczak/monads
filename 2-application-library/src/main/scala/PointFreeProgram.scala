@@ -4,19 +4,19 @@ object PointFreeProgram {
 
   // format: OFF
   lazy val createDescription: Array[String] => Description[Unit] =
-    ignoreArgs            `;`
-    hyphens                `;`
-    display                `;`
-    question               `;`
-    display                `;`
-    prompt                 `;`
-    convertStringToInt     `;`
-    ensureAmountIsPositive `;`
-    round                  `;`
-    createMessage          `;`
-    display                `;`
-    hyphens                `;`
-    display                `;`
+    ignoreArgs             andThen
+    hyphens                andThen
+    display                andThen
+    question               andThen
+    display                andThen
+    prompt                 andThen
+    convertStringToInt     andThen
+    ensureAmountIsPositive andThen
+    round                  andThen
+    createMessage          andThen
+    display                andThen
+    hyphens                andThen
+    display                andThen
     Description.brokenCreate
   // format: ON
 
