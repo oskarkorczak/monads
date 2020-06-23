@@ -3,7 +3,6 @@ import fplibrary.Monad
 final case class IO[+A](unsafeRun: () => A) extends AnyVal
 
 object IO {
-
   def create[A](a: =>A): IO[A] =
     IO(() => a)
 

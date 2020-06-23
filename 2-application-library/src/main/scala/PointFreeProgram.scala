@@ -5,7 +5,7 @@ object PointFreeProgram {
   // format: OFF
   lazy val createIO: Array[String] => IO[Unit] =
     ignoreArgs             --> hyphens                --> displayKleisli                                                               >=>
-    question               --> displayKleisli                                                                                     >=>
+    question               --> displayKleisli                                                                                          >=>
     promptKleisli                                                                                                                      >=>
     convertStringToInt     --> ensureAmountIsPositive --> round                  --> createMessage          --> displayKleisli         >=>
     hyphens                --> displayKleisli
