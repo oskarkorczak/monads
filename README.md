@@ -1,4 +1,5 @@
 ## Monads
+Exercise allowing program conversion from imperative to functional style. 
 
 ### Running
 
