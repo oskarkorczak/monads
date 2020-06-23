@@ -18,15 +18,13 @@ object PointFree {
     dc
   }
 
-  def composeKleisli2[A, B, C, D[_]](adb: A => Description[B], bdc: B => Description[C]): A => Description[C] = a => {
-    val db: Description[B] = adb(a)
+  def composeKleisli2[A, B, C, D[_]: Monad](adb: A => D[B], bdc: B => D[C]): A => D[C] = a => {
+    val db: D[B] = adb(a)
 
-    val dc = helper(db, bdc)
+    val dc = Monad[D].flatMap(db)(bdc)
 
     dc
   }
-
-  def helper[A, B, C[_]](ca: C[A], acb: A => C[B]): C[B] = ???
 
   trait Monad[C[_]]{
     def flatMap[A, B](ca: C[A])(acb: A => C[B]): C[B]
