@@ -9,7 +9,7 @@ object PointFreeProgram {
     displayKleisli         >=>
     question               -->
     displayKleisli         >=>
-    prompt                 -->
+    promptKleisli          >=>
     convertStringToInt     -->
     ensureAmountIsPositive -->
     round                  -->
@@ -40,6 +40,8 @@ object PointFreeProgram {
 
   // side effect (reading from the console)
   private lazy val prompt: Any => String = _ => "5"
+
+  private lazy val promptKleisli: Any => Description[String] = _ => Description.create("5")
 
   // potential side effect (throwing of a NumberFormatException)
   private lazy val convertStringToInt: String => Int = input => input.toInt
