@@ -1,69 +1,60 @@
-import fplibrary.Description
+import fplibrary._
 
 object PointFreeProgram {
 
-  def createDescription(args: Array[String]): Description[Unit] =
-    Description.create(
-      display(
-        hyphens(
-          display(
-            createMessage(
-              round(
-                ensureAmountIsPositive(
-                  converStringToInt(
-                    prompt(
-                      display(
-                        question(
-                          display(
-                            hyphens(
-                              args
-                            )
-                          )
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    )
+  // format: OFF
+  lazy val createDescription: Array[String] => Description[Unit] =
+    ignoreArgs            `;`
+    hyphens                `;`
+    display                `;`
+    question               `;`
+    display                `;`
+    prompt                 `;`
+    convertStringToInt     `;`
+    ensureAmountIsPositive `;`
+    round                  `;`
+    createMessage          `;`
+    display                `;`
+    hyphens                `;`
+    display                `;`
+    Description.brokenCreate
+  // format: ON
 
-  private def hyphens(input: Any): String = "-" * 50
+  private lazy val ignoreArgs: Array[String] => Unit = _ =>
+    ()
 
-  private def question(input: Any): String = "How much money would you like to deposit?"
+  private lazy val hyphens: Any => String = _ =>
+    "-" * 50
+
+  private lazy val question: Any => String = _ =>
+    "How much money would you like to deposit?"
 
   // side effect (writing to the console)
-  private def display(input: Any): Unit = println(input)
+  private lazy val display: Any => Unit = input => {
+    println(input)
+  }
 
   // side effect (reading from the console)
-  private def prompt(input: Any): String = "5"
+  private lazy val prompt: Any => String = _ => "5"
 
   // potential side effect (throwing of a NumberFormatException)
-  private def converStringToInt(input: String): Int = input.toInt
+  private lazy val convertStringToInt: String => Int = input => input.toInt
 
-  private def ensureAmountIsPositive(amount: Int): Int = {
+  private lazy val ensureAmountIsPositive: Int => Int = amount =>
     if (amount < 1)
       1
     else
       amount
-  }
 
-  @scala.annotation.tailrec
-  private def round(amount: Int): Int = {
+  private lazy val round: Int => Int = amount =>
     if (isDivisibleByHundered(amount))
       amount
     else
       round(amount + 1)
-  }
 
-  private def isDivisibleByHundered(amount: Int): Boolean = {
+  private lazy val isDivisibleByHundered: Int => Boolean = amount =>
     amount % 100 == 0
-  }
 
-  private def createMessage(balance: Int): String = {
+  private lazy val createMessage: Int => String = balance =>
     s"Congratulations, you now have USD $balance."
-  }
 }
