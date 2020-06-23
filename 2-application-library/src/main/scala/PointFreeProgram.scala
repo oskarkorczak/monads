@@ -6,17 +6,17 @@ object PointFreeProgram {
   lazy val createDescription: Array[String] => Description[Unit] =
     ignoreArgs             -->
     hyphens                -->
-    display                -->
+    displayKleisli         >=>
     question               -->
-    display                -->
+    displayKleisli         >=>
     prompt                 -->
     convertStringToInt     -->
     ensureAmountIsPositive -->
     round                  -->
     createMessage          -->
-    display                -->
+    displayKleisli         >=>
     hyphens                -->
-    display                -->
+    displayKleisli         >=>
     Description.brokenCreate
   // format: ON
 
@@ -31,6 +31,10 @@ object PointFreeProgram {
 
   // side effect (writing to the console)
   private lazy val display: Any => Unit = input => {
+    println(input)
+  }
+
+  private lazy val displayKleisli: Any => Description[Unit] = input => Description.create {
     println(input)
   }
 

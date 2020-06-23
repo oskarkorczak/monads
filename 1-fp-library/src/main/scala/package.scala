@@ -13,5 +13,10 @@ package object fplibrary {
     @inline def `.`[C](bc: B => C): A => C = PointFree.compose(ab, bc)
     @inline def `-->`[C](bc: B => C): A => C = PointFree.compose(ab, bc)
   }
+
+  implicit final class InfixNotationForPointFreeKleisli[A, B](private val adb: A => Description[B]) extends AnyVal {
+    @inline def `;;`[C](bdc: B => Description[C]): A => Description[C] = PointFree.composeKleisli(adb, bdc)
+    @inline def `>=>`[C](bdc: B => Description[C]): A => Description[C] = PointFree.composeKleisli(adb, bdc)
+  }
 }
 
