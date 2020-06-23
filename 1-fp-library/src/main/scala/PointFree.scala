@@ -26,5 +26,5 @@ object PointFree {
     dc
   }
 
-  def helper[B, C, D[_]](db: D[B], bdc: B => D[C]): D[C] = ???
+  def helper[A, B, C[_]](ca: C[A], acb: A => C[B]): C[B] = ???
 }
