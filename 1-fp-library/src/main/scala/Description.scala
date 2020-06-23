@@ -1,14 +1,17 @@
-import fplibrary.{Description, Monad}
+import fplibrary.Monad
 
-object Description {
-  def create[A](a: =>A): Description[A] =
-    () => a
+final case class IO[+A](unsafeRun: () => A) extends AnyVal
 
-  implicit val M: Monad[Description] = new Monad[Description] {
-    final override def flatMap[A, B](ca: Description[A])(acb: A => Description[B]): Description[B] = Description.create {
-      val a: A = ca.apply()
-      val db: Description[B] = acb(a)
-      val b: B = db.apply()
+object IO {
+
+  def create[A](a: =>A): IO[A] =
+    IO(() => a)
+
+  implicit val M: Monad[IO] = new Monad[IO] {
+    final override def flatMap[A, B](ca: IO[A])(acb: A => IO[B]): IO[B] = IO.create {
+      val a: A = ca.unsafeRun()
+      val db: IO[B] = acb(a)
+      val b: B = db.unsafeRun()
 
       b
     }

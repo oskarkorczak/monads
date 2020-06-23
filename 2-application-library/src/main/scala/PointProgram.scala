@@ -1,8 +1,6 @@
-import fplibrary.Description
-
 object PointProgram {
 
-  def createDescription(args: Array[String]): Description[Unit] = Description.create {
+  def createDescription(args: Array[String]): IO[Unit] = IO.create {
     args.isEmpty
 
     display(hyphens)

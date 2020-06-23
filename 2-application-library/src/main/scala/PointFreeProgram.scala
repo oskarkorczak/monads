@@ -1,10 +1,9 @@
 import fplibrary._
-import Description._
 
 object PointFreeProgram {
 
   // format: OFF
-  lazy val createDescription: Array[String] => Description[Unit] =
+  lazy val createIO: Array[String] => IO[Unit] =
     ignoreArgs             --> hyphens                --> displayKleisli                                                               >=>
     question               --> displayKleisli                                                                                     >=>
     promptKleisli                                                                                                                      >=>
@@ -22,18 +21,12 @@ object PointFreeProgram {
     "How much money would you like to deposit?"
 
   // side effect (writing to the console)
-  private lazy val display: Any => Unit = input => {
-    println(input)
-  }
-
-  private lazy val displayKleisli: Any => Description[Unit] = input => Description.create {
+  private lazy val displayKleisli: Any => IO[Unit] = input => IO.create {
     println(input)
   }
 
   // side effect (reading from the console)
-  private lazy val prompt: Any => String = _ => "5"
-
-  private lazy val promptKleisli: Any => Description[String] = _ => Description.create("5")
+  private lazy val promptKleisli: Any => IO[String] = _ => IO.create("5")
 
   // potential side effect (throwing of a NumberFormatException)
   private lazy val convertStringToInt: String => Int = input => input.toInt
