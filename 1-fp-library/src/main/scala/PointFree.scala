@@ -17,4 +17,14 @@ object PointFree {
 
     dc
   }
+
+  def composeKleisli2[A, B, C, D[_]](adb: A => Description[B], bdc: B => Description[C]): A => Description[C] = a => {
+    val db: Description[B] = adb(a)
+
+    val dc = helper(db, bdc)
+
+    dc
+  }
+
+  def helper[B, C, D[_]](db: D[B], bdc: B => D[C]): D[C] = ???
 }
