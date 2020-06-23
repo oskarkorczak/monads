@@ -1,11 +1,12 @@
 import fplibrary._
+import Description._
 
 object PointFreeProgram {
 
   // format: OFF
   lazy val createDescription: Array[String] => Description[Unit] =
     ignoreArgs             --> hyphens                --> displayKleisli                                                               >=>
-    question               --> displayKleisli                                                                                          >=>
+    question               --> displayKleisli                                                                                     >=>
     promptKleisli                                                                                                                      >=>
     convertStringToInt     --> ensureAmountIsPositive --> round                  --> createMessage          --> displayKleisli         >=>
     hyphens                --> displayKleisli
