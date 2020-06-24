@@ -4,23 +4,58 @@ object PointProgram {
     args.isEmpty
 
     val firstIO: IO[Unit] = displayKleisli(hyphens)
-    firstIO.unsafeRun()
 
-    val secondIO: IO[Unit] = displayKleisli(question)
-    secondIO.unsafeRun()
+    val secondIO: IO[Unit] = IO.create {
+      val _: Unit = firstIO.unsafeRun() // first IO result
 
-    val thirdIO: IO[String] = promptKleisli
-    val input: String = thirdIO.unsafeRun()
+      val secondIO: IO[Unit] = displayKleisli(question)
+      val secondIOResult: Unit = secondIO.unsafeRun()
 
-    val integerAmount: Int = converStringToInt(input)
-    val positiveAmount: Int = ensureAmountIsPositive(integerAmount)
-    val balance: Int = round(positiveAmount)
-    val message: String = createMessage(balance)
+      secondIOResult
+    }
 
-    val fifthIO: IO[Unit] = displayKleisli(message)
-    fifthIO.unsafeRun()
 
-    val sixthIO: IO[Unit] = displayKleisli(hyphens)
+    val thirdIO: IO[String] = IO.create {
+      val _: Unit = secondIO.unsafeRun() // second IO result
+
+      val thirdIO: IO[String] = promptKleisli
+      val input: String = thirdIO.unsafeRun()
+
+      input
+    }
+
+    val fourthIO: IO[String] = IO.create {
+      val input: String = thirdIO.unsafeRun() // third IO result
+
+      val fourthIO: IO[String] = IO.create {
+        val integerAmount: Int = converStringToInt(input)
+        val positiveAmount: Int = ensureAmountIsPositive(integerAmount)
+        val balance: Int = round(positiveAmount)
+        val message: String = createMessage(balance)
+
+        message
+      }
+      val message: String = fourthIO.unsafeRun()
+
+      message
+    }
+
+    val fifthIO: IO[Unit] = IO.create {
+      val message: String = fourthIO.unsafeRun() // fourth IO result
+
+      val fifthIO: IO[Unit] = displayKleisli(message)
+      val fifthIOResult: Unit = fifthIO.unsafeRun()
+
+      fifthIOResult
+    }
+
+    val sixthIO: IO[Unit] = IO.create {
+      val _: Unit = fifthIO.unsafeRun() // fifth IO result
+      val sixthIO: IO[Unit] = displayKleisli(hyphens)
+      val sixthIOResult: Unit = sixthIO.unsafeRun()
+
+      sixthIOResult
+    }
     sixthIO.unsafeRun()
   }
 
