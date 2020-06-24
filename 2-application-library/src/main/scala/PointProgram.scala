@@ -1,23 +1,19 @@
-import fplibrary.Monad
+import fplibrary._
 
 object PointProgram {
 
   def createDescription(args: Array[String]): IO[Unit] = {
-    args.isEmpty
-
-    val M: Monad[IO] = Monad[IO]
-
     val firstIO: IO[Unit] = displayKleisli(hyphens)
 
-    val secondIO: IO[Unit] = M.flatMap(firstIO) { _ =>
+    val secondIO: IO[Unit] = firstIO.flatMap { _ =>
       displayKleisli(question)
     }
 
-    val thirdIO: IO[String] = M.flatMap(secondIO) { _ =>
+    val thirdIO: IO[String] = secondIO.flatMap { _ =>
       promptKleisli
     }
 
-    val fourthIO: IO[String] = M.flatMap(thirdIO) { input =>
+    val fourthIO: IO[String] = thirdIO.flatMap { input =>
       IO.create {
         val integerAmount: Int = converStringToInt(input)
         val positiveAmount: Int = ensureAmountIsPositive(integerAmount)
@@ -28,11 +24,11 @@ object PointProgram {
       }
     }
 
-    val fifthIO: IO[Unit] = M.flatMap(fourthIO) { message =>
+    val fifthIO: IO[Unit] = fourthIO.flatMap { message =>
       displayKleisli(message)
     }
 
-    val sixthIO: IO[Unit] = M.flatMap(fifthIO) { _ =>
+    val sixthIO: IO[Unit] = fifthIO.flatMap { _ =>
       displayKleisli(hyphens)
     }
 
