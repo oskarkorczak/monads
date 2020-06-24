@@ -6,7 +6,7 @@ object PointProgram {
       _ <- displayKleisli(hyphens)
       _ <- displayKleisli(question)
       input <- promptKleisli
-      message <- IO.create {
+      message = {
         val integerAmount: Int = converStringToInt(input)
         val positiveAmount: Int = ensureAmountIsPositive(integerAmount)
         val balance: Int = round(positiveAmount)
