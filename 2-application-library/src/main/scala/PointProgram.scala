@@ -1,7 +1,11 @@
+import fplibrary.Monad
+
 object PointProgram {
 
   def createDescription(args: Array[String]): IO[Unit] = {
     args.isEmpty
+
+    val M: Monad[IO] = Monad[IO]
 
     val firstIO: IO[Unit] = displayKleisli(hyphens)
 
@@ -39,14 +43,18 @@ object PointProgram {
       message
     }
 
-    val fifthIO: IO[Unit] = IO.create {
-      val message: String = fourthIO.unsafeRun() // fourth IO result
-
-      val fifthIO: IO[Unit] = displayKleisli(message)
-      val fifthIOResult: Unit = fifthIO.unsafeRun()
-
-      fifthIOResult
+//    val fifthIO: IO[Unit] = M.flatMap(fourthIO)(displayKleisli)
+    val fifthIO: IO[Unit] = M.flatMap(fourthIO) { message =>
+      displayKleisli(message)
     }
+//    val fifthIO: IO[Unit] = IO.create {
+//      val message: String = fourthIO.unsafeRun() // fourth IO result
+//
+//      val fifthIO: IO[Unit] = displayKleisli(message)
+//      val fifthIOResult: Unit = fifthIO.unsafeRun()
+//
+//      fifthIOResult
+//    }
 
     val sixthIO: IO[Unit] = IO.create {
       val _: Unit = fifthIO.unsafeRun() // fifth IO result
