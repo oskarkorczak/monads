@@ -2,18 +2,12 @@ import fplibrary._
 
 object PointProgram {
 
-  def createDescription(args: Array[String]): IO[Unit] = {
-    val firstIO: IO[Unit] = displayKleisli(hyphens)
-
-    val secondIO: IO[Unit] = firstIO.flatMap { _ =>
+  def createDescription(args: Array[String]): IO[Unit] =
+    displayKleisli(hyphens).flatMap { _ =>
       displayKleisli(question)
-    }
-
-    val thirdIO: IO[String] = secondIO.flatMap { _ =>
+    }.flatMap { _ =>
       promptKleisli
-    }
-
-    val fourthIO: IO[String] = thirdIO.flatMap { input =>
+    }.flatMap { input =>
       IO.create {
         val integerAmount: Int = converStringToInt(input)
         val positiveAmount: Int = ensureAmountIsPositive(integerAmount)
@@ -22,18 +16,11 @@ object PointProgram {
 
         message
       }
-    }
-
-    val fifthIO: IO[Unit] = fourthIO.flatMap { message =>
+    }.flatMap { message =>
       displayKleisli(message)
-    }
-
-    val sixthIO: IO[Unit] = fifthIO.flatMap { _ =>
+    }.flatMap { _ =>
       displayKleisli(hyphens)
     }
-
-    sixthIO
-  }
 
   private val hyphens: String = "\u2500" * 50
 
