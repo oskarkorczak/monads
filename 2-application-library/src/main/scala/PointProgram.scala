@@ -1,6 +1,6 @@
 object PointProgram {
 
-  def createDescription(args: Array[String]): IO[Unit] = IO.create {
+  def createDescription(args: Array[String]): IO[Unit] = {
     args.isEmpty
 
     val firstIO: IO[Unit] = displayKleisli(hyphens)
@@ -13,7 +13,6 @@ object PointProgram {
 
       secondIOResult
     }
-
 
     val thirdIO: IO[String] = IO.create {
       val _: Unit = secondIO.unsafeRun() // second IO result
@@ -56,7 +55,8 @@ object PointProgram {
 
       sixthIOResult
     }
-    sixthIO.unsafeRun()
+
+    sixthIO
   }
 
   private val hyphens: String = "\u2500" * 50
