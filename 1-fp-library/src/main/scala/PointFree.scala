@@ -9,9 +9,9 @@ object PointFree {
     c
   }
 
-  def composeKleisli[A, B, C, D[_] : Monad](adb: A => D[B], bdc: B => D[C]): A => D[C] = a => {
+  def composeKleisli[A, B, C, D[_] : FlatMap](adb: A => D[B], bdc: B => D[C]): A => D[C] = a => {
     val db: D[B] = adb(a)
-    val dc = Monad[D].flatMap(db)(bdc)
+    val dc = FlatMap[D].flatMap(db)(bdc)
 
     dc
   }

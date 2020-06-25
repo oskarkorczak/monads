@@ -10,9 +10,10 @@ package object fplibrary {
   implicit final class InfixNotationForHigherKinds[C[_], A](private val ca: C[A]) extends AnyVal {
     @inline def map[B](ab: A => B)(implicit F: Functor[C]): C[B] = F.map(ca)(ab)
     @inline def fmap[B](ab: A => B)(implicit F: Functor[C]): C[B] = F.map(ca)(ab)
-    @inline def flatMap[B](acb: A => C[B])(implicit M: Monad[C]): C[B] = M.flatMap(ca)(acb)
-    @inline def bind[B](acb: A => C[B])(implicit M: Monad[C]): C[B] = M.flatMap(ca)(acb)
-    @inline def >>==[B](acb: A => C[B])(implicit M: Monad[C]): C[B] = M.flatMap(ca)(acb)
+
+    @inline def flatMap[B](acb: A => C[B])(implicit M: FlatMap[C]): C[B] = M.flatMap(ca)(acb)
+    @inline def bind[B](acb: A => C[B])(implicit M: FlatMap[C]): C[B] = M.flatMap(ca)(acb)
+    @inline def >>==[B](acb: A => C[B])(implicit M: FlatMap[C]): C[B] = M.flatMap(ca)(acb)
 
     def flatten[D](implicit M: Monad[C], view: C[A] => C[C[D]]): C[D] = M.flatten(view(ca))
     @inline def join[D](implicit M: Monad[C], view: C[A] => C[C[D]]): C[D] = M.flatten(view(ca))
