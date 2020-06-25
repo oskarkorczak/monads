@@ -13,6 +13,4 @@ trait Monad[C[_]] extends Functor[C] {
   @inline def >>==[A, B](ca: C[A])(acb: A => C[B]): C[B] = flatMap(ca)(acb)
 }
 
-object Monad {
-  def apply[C[_]: Monad]: Monad[C] = implicitly[Monad[C]]
-}
+object Monad extends Summoner[Monad]
