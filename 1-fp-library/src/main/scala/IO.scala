@@ -7,13 +7,16 @@ object IO {
     IO(() => a)
 
   implicit val M: Monad[IO] = new Monad[IO] {
-    final override def map[A, B](ca: IO[A])(ab: A => B): IO[B] = IO.create {
-      val a = ca.unsafeRun()
+    final override def pure[A](a: =>A): IO[A] =
+      create(a)
 
-      val b = ab(a)
-
-      b
-    }
+//    final override def map[A, B](ca: IO[A])(ab: A => B): IO[B] = IO.create {
+//      val a = ca.unsafeRun()
+//
+//      val b = ab(a)
+//
+//      b
+//    }
 
     final override def flatMap[A, B](ca: IO[A])(acb: A => IO[B]): IO[B] = IO.create {
       val a: A = ca.unsafeRun()
