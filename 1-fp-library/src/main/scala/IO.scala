@@ -22,6 +22,5 @@ object IO {
 
       b
     }
-
   }
 }
