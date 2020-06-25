@@ -25,5 +25,13 @@ object IO {
 
       b
     }
+
+    final override def flatten[A](cca: IO[IO[A]]): IO[A] = IO.create {
+        val ca = cca.unsafeRun()
+        val a = ca.unsafeRun()
+
+        a
+      }
+
   }
 }
