@@ -2,7 +2,12 @@ package fpllibrary
 
 import fplibrary.Monad
 
-sealed abstract class Maybe[+A] extends Product with Serializable // Option
+sealed abstract class Maybe[+A] extends Product with Serializable { // Option
+  final def getOrElse[Super >: A](alternative: => Super): Super = this match {
+    case Maybe.Just(a) => a
+    case Maybe.Nothing => alternative
+  }
+}
 
 object Maybe {
   final case class Just[+A](a: A) extends Maybe[A] // Some

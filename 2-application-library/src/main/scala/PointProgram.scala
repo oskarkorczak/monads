@@ -22,10 +22,7 @@ object PointProgram {
       message
     }
 
-    val message: String = maybeMessage match {
-      case Maybe.Just(message) =>message
-      case Maybe.Nothing => "Sorry, need a valid number"
-    }
+    val message: String = maybeMessage.getOrElse("Sorry, need a valid number")
 
     message
   }
