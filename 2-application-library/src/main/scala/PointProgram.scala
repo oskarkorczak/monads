@@ -14,15 +14,13 @@ object PointProgram {
   private def fromInputToMessage(input: String): String = {
     val maybeInteger: Maybe[Int] = converStringToInt(input)
 
-    val maybeMessage: Maybe[String] = maybeInteger.map { integerAmount =>
+    val message: String = maybeInteger.mapOrElse("Sorry, need a valid number") { integerAmount =>
       val positiveAmount = ensureAmountIsPositive(integerAmount)
       val balance = round(positiveAmount)
       val message = createMessage(balance)
 
       message
     }
-
-    val message: String = maybeMessage.getOrElse("Sorry, need a valid number")
 
     message
   }

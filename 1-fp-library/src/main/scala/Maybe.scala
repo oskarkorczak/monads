@@ -7,6 +7,11 @@ sealed abstract class Maybe[+A] extends Product with Serializable { // Option
     case Maybe.Just(a) => a
     case Maybe.Nothing => alternative
   }
+
+  final def mapOrElse[B](alternative: => B)(ab: A => B): B = this match {
+    case Maybe.Just(a) => ab(a)
+    case Maybe.Nothing => alternative
+  }
 }
 
 object Maybe {
