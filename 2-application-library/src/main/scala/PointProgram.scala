@@ -5,14 +5,19 @@ object PointProgram {
   def createDescription(args: Array[String]): IO[Unit] = for {
       _ <- displayKleisli(hyphens)
       _ <- displayKleisli(question)
-      input <- promptKleisli
-      integerAmount = converStringToInt(input)
-      positiveAmount = ensureAmountIsPositive(integerAmount)
-      balance = round(positiveAmount)
-      message = createMessage(balance)
+      message <- promptKleisli.map(fromInputToMessage)
       _ <- displayKleisli(message)
       _ <- displayKleisli(hyphens)
     } yield ()
+
+  private def fromInputToMessage(input: String): String = {
+    val integerAmount = converStringToInt(input)
+    val positiveAmount = ensureAmountIsPositive(integerAmount)
+    val balance = round(positiveAmount)
+    val message = createMessage(balance)
+
+    message
+  }
 
   private val hyphens: String = "\u2500" * 50
 
