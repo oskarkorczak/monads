@@ -3,11 +3,11 @@ import fplibrary._
 object PointProgram {
 
   def createDescription(args: Array[String]): IO[Unit] = for {
-      _ <- displayKleisli(hyphens)
-      _ <- displayKleisli(question)
-      message <- promptKleisli.map(fromInputToMessage)
-      _ <- displayKleisli(message)
-      _ <- displayKleisli(hyphens)
+      _ <- display(hyphens)
+      _ <- display(question)
+      message <- prompt.map(fromInputToMessage)
+      _ <- display(message)
+      _ <- display(hyphens)
     } yield ()
 
   private def fromInputToMessage(input: String): String = {
@@ -24,17 +24,13 @@ object PointProgram {
   private val question: String = "How much money would you like to deposit?"
 
   // side effect (writing to the console)
-  private def displayKleisli(input: Any): IO[Unit] =
+  private def display(input: Any): IO[Unit] =
     IO.create {
       println(input)
     }
 
-  private def display(input: Any): Unit = println(input)
-
   // side effect (reading from the console)
-  private def promptKleisli: IO[String] = IO.create("5")
-
-  private def prompt(): String = 5.toString // scala.io.StdIn.readLine
+  private def prompt: IO[String] = IO.create("5") // scala.io.StdIn.readLine
 
   // potential side effect (throwing of a NumberFormatException)
   private def converStringToInt(input: String): Int = input.toInt
