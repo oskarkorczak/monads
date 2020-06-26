@@ -29,7 +29,8 @@ object PointProgram {
     }
 
   // side effect (reading from the console)
-  private def prompt: IO[String] = IO.create("5") // scala.io.StdIn.readLine
+//  private def prompt: IO[String] = IO.create("5")
+  private def prompt: IO[String] = IO.create(scala.io.StdIn.readLine)
 
   // potential side effect (throwing of a NumberFormatException)
   private def converStringToInt(input: String): Maybe[Int] =
