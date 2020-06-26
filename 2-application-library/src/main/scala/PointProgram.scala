@@ -1,4 +1,5 @@
 import fplibrary._
+import fpllibrary.Maybe
 
 object PointProgram {
 
@@ -11,10 +12,21 @@ object PointProgram {
     } yield ()
 
   private def fromInputToMessage(input: String): String = {
-    val integerAmount = converStringToInt(input)
-    val positiveAmount = ensureAmountIsPositive(integerAmount)
-    val balance = round(positiveAmount)
-    val message = createMessage(balance)
+    val maybeInteger: Maybe[Int] = converStringToInt(input)
+
+    val message: String = maybeInteger match {
+      case Maybe.Just(integerAmount) =>
+        val positiveAmount = ensureAmountIsPositive(integerAmount)
+        val balance = round(positiveAmount)
+        val message = createMessage(balance)
+
+        message
+
+      case Maybe.Nothing =>
+        val message = "Sorry, need a valid number"
+
+        message
+    }
 
     message
   }
@@ -33,7 +45,11 @@ object PointProgram {
   private def prompt: IO[String] = IO.create("5") // scala.io.StdIn.readLine
 
   // potential side effect (throwing of a NumberFormatException)
-  private def converStringToInt(input: String): Int = input.toInt
+  private def converStringToInt(input: String): Maybe[Int] =
+    try Maybe.Just(input.toInt)
+    catch {
+      case _: NumberFormatException => Maybe.Nothing
+    }
 
   private def ensureAmountIsPositive(amount: Int): Int =
     if (amount < 1)
