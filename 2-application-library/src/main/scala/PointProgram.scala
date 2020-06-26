@@ -11,19 +11,12 @@ object PointProgram {
       _ <- display(hyphens)
     } yield ()
 
-  private def fromInputToMessage(input: String): String = {
-    val maybeInteger: Maybe[Int] = converStringToInt(input)
+  private def fromInputToMessage(input: String): String =
+    converStringToInt(input)
+      .mapOrElse("Sorry, need a valid number")(fromIntegerInputToMessage)
 
-    val message: String = maybeInteger.mapOrElse("Sorry, need a valid number") { integerAmount =>
-      val positiveAmount = ensureAmountIsPositive(integerAmount)
-      val balance = round(positiveAmount)
-      val message = createMessage(balance)
-
-      message
-    }
-
-    message
-  }
+  private def fromIntegerInputToMessage(integerAmount: Int): String =
+    createMessage(round(ensureAmountIsPositive(integerAmount)))
 
   private val hyphens: String = "\u2500" * 50
 
